@@ -1,7 +1,6 @@
 package MM1;
 
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 
 class Scheduler {
     private double clock;
@@ -32,6 +31,7 @@ class Scheduler {
             if (!CEL.isEmpty()){
                 int serviceTime = server.getExponentialVar();
                 Customer currentCustomer = CEL.pop();
+                if (clock < currentCustomer.getArriveTime()) clock = currentCustomer.getArriveTime();
                 currentQueueNum --; //the customer who received the service are depart from the queue
                 double delayTime = clock - currentCustomer.getArriveTime();
                 while(currentQueueNum < queueMaxLength){
@@ -42,8 +42,8 @@ class Scheduler {
                     else if (currentQueueNum == 0 && !FEL.isEmpty()) {
                         Customer c = FEL.poll();
                         CEL.addLast(c);
-                        if (clock + serviceTime < c.getArriveTime())
-                            clock = c.getArriveTime();
+//                        if (clock + serviceTime < c.getArriveTime())
+//                            clock = c.getArriveTime();
                         currentQueueNum ++;
                     }
                     else break;
@@ -53,13 +53,12 @@ class Scheduler {
                     delayNumber ++;
                 }
                 totalDelayTime += delayTime;
-                // System.out.println("arrival time: " + currentCustomer.getArriveTime() + " clock: " + clock);
-                // System.out.println("delay time: " + delayTime + " delay number: " + delayNumber + " service time: " + serviceTime);
                 clock += serviceTime;
+                System.out.println(currentCustomer + "\nService Time: " + serviceTime +
+                        "\nDelay Time: " + delayTime + "\nLeft at: " + clock + "\n");
                 areaNumberInQueue += serviceTime * currentQueueNum;
                 areaStatus += serviceTime;
                 customerNumber --;
-                // System.out.println(currentQueueNum + " people in the queue");
             }
             while(currentQueueNum < queueMaxLength){
                 if (!FEL.isEmpty() && FEL.peek().getArriveTime() <= clock && currentQueueNum != 0){

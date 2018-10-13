@@ -1,8 +1,6 @@
 package MM1;
 
-import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Scanner;
 
 class Main {
@@ -21,19 +19,12 @@ class Main {
         int customerNumber = Integer.parseInt(s.nextLine());
 
         LinkedList<Customer> FEL = new LinkedList<>();
-//        PriorityQueue<Customer> FEL = new PriorityQueue<>(customerNumber, new Comparator<Customer>() {
-//            @Override
-//            public int compare(Customer o1, Customer o2) {
-//                return (int) (o1.getArriveTime() - o2.getArriveTime());
-//            }
-//        });
         double arrivalTime = 0;
         for(int i = 0; i < customerNumber; i ++){
-            Customer c = new Customer(i);
+            Customer c = new Customer(i, averageIntervalTime);
             arrivalTime += c.getIntervalTime();
             c.setArriveTime(arrivalTime);
-            System.out.println(c.toString());
-            // FEL.add(c);
+            // System.out.println(c.toString());
             FEL.addLast(c);
         }
 
